@@ -1,5 +1,5 @@
 import os
-from typing import Dict, List, Tuple
+from typing import Dict, List
 
 import pytest
 
@@ -8,37 +8,39 @@ from src.vacancy.vacancy import Vacancy
 
 
 @pytest.fixture
-def vacancies() -> Tuple[Vacancy, Vacancy, Vacancy, Vacancy]:
+def vacancies() -> List[Vacancy]:
     """
-    Фикстура содержащая экземпляры класса Vacancy.
+    Фикстура, содержащая экземпляры класса Vacancy.
 
     :return: Экземпляры класса Vacancy.
     """
-    v1 = Vacancy("Чайный сомелье", "https://hh.ru/vacancy/106029258", "от 80 000 ₽", "Требования не указаны")
+    v1 = Vacancy(
+        "Чайный сомелье", "https://hh.ru/vacancy/106029258", "от 80 000 ₽", "Санкт-Петербург", "Требования не указаны."
+    )
 
     v2 = Vacancy(
         "Тестировщик комфорта квартир",
         "https://hh.ru/vacancy/93353083",
         "350 000 - 450 000 ₽",
+        "Воронеж",
         "Занимать активную жизненную позицию",
     )
 
-    v3 = Vacancy("Go Developer", "https://hh.ru/vacancy/106507837", "600 000 руб.")
+    v3 = Vacancy("Go Developer", "https://hh.ru/vacancy/106507837", "600 000 руб.", "Москва")
 
     v4 = Vacancy(
         "Контролер склада",
         "https://hh.ru/vacancy/103531332",
+        city="Москва",
         requirements="От Вас: Желание зарабатывать. Внимательность, ответственность.",
     )
 
-    return v1, v2, v3, v4
+    return [v1, v2, v3, v4]
 
 
 @pytest.fixture(autouse=True)
 def cleanup_file() -> None:
-    """
-    Фикстура, удаляющая файл vacancies.json перед каждым тестом, если он существует
-    """
+    """Фикстура, удаляющая файл vacancies.json перед каждым тестом, если он существует"""
     if os.path.exists(VACANCIES_JSON_PATH):
         os.remove(VACANCIES_JSON_PATH)
 
@@ -52,91 +54,101 @@ def json_data_items() -> List[Dict]:
     """
     return [
         {
-            "id": "105661463",
-            "name": "Python разработчик",
+            "name": "Чайный сомелье",
+            "area": {"id": "2", "name": "Санкт-Петербург"},
+            "salary": {"from": 80000, "to": None},
+            "alternate_url": "https://hh.ru/vacancy/106029258",
+            "snippet": {"requirement": None},
+        },
+        {
+            "name": "Тестировщик комфорта квартир",
+            "area": {"id": "26", "name": "Воронеж"},
+            "salary": {"from": 350000, "to": 450000},
+            "alternate_url": "https://hh.ru/vacancy/93353083",
+            "snippet": {"requirement": "Занимать активную жизненную позицию"},
+        },
+        {
+            "name": "Go Developer",
             "area": {"id": "1", "name": "Москва"},
-            "salary": {"from": 60000, "to": 110000},
-            "alternate_url": "https://hh.ru/vacancy/105661463",
-            "snippet": {"requirement": "Опыт работы с асинхронным питоном."},
+            "salary": {"from": None, "to": 600000},
+            "alternate_url": "https://hh.ru/vacancy/106507837",
+            "snippet": {"requirement": None},
         },
         {
-            "id": "101951553",
-            "name": "Trainee/Intern/Junior Python backend developer",
-            "area": {"id": "2", "name": "Санкт-Петербург"},
-            "salary": {"from": 10000, "to": 30000},
-            "alternate_url": "https://hh.ru/vacancy/101951553",
-            "snippet": {"requirement": "Для этого мы ищем начинающего амбициозного интерна-джуна питониста."},
-        },
-        {
-            "id": "105193821",
-            "name": "Python developer",
-            "area": {"id": "2", "name": "Санкт-Петербург"},
-            "salary": {"from": 80000, "to": "None"},
-            "alternate_url": "https://hh.ru/vacancy/105193821",
-            "snippet": {"requirement": "Отличное знание Python."},
+            "name": "Контролер склада",
+            "area": {"id": "1", "name": "Москва"},
+            "salary": None,
+            "alternate_url": "https://hh.ru/vacancy/103531332",
+            "snippet": {"requirement": "От Вас: Желание зарабатывать. Внимательность, ответственность."},
         },
     ]
 
 
 @pytest.fixture
-def prepared_data() -> Dict:
-    """
-    Фикстура, содержащая данные о вакансиях, подготовленные к записи в файл.
-
-    :return: Данные о вакансиях.
-    """
-    return {
-        105661463: {
-            "name": "Python разработчик",
-            "url": "https://hh.ru/vacancy/105661463",
-            "salary": "60000-110000 руб.",
-            "requirements": "Опыт работы с асинхронным питоном.",
-        },
-        101951553: {
-            "name": "Trainee/Intern/Junior Python backend developer",
-            "url": "https://hh.ru/vacancy/101951553",
-            "salary": "10000-30000 руб.",
-            "requirements": "Для этого мы ищем начинающего амбициозного интерна-джуна питониста.",
-        },
-        105193821: {
-            "name": "Python developer",
-            "url": "https://hh.ru/vacancy/105193821",
-            "salary": "80000-None руб.",
-            "requirements": "Отличное знание Python.",
-        },
-    }
-
-
-@pytest.fixture
-def vacancies_from_file() -> Dict:
+def vacancies_from_file() -> List:
     """
     Фикстура, содержащая данные загруженные из файла.
 
     :return: Данные о вакансиях.
     """
-    return {
-        "1": {
+    return [
+        {
             "name": "Чайный сомелье",
             "url": "https://hh.ru/vacancy/106029258",
             "salary": "80000 руб.",
-            "requirements": "Требования не указаны",
+            "city": "Санкт-Петербург",
+            "requirements": "Требования не указаны.",
         },
-        "2": {
+        {
             "name": "Тестировщик комфорта квартир",
             "url": "https://hh.ru/vacancy/93353083",
             "salary": "350000-450000 руб.",
+            "city": "Воронеж",
             "requirements": "Занимать активную жизненную позицию",
         },
-        "3": {
+        {
             "name": "Go Developer",
             "url": "https://hh.ru/vacancy/106507837",
             "salary": "600000 руб.",
+            "city": "Москва",
             "requirements": "Требования не указаны.",
         },
-        "4": {
+        {
             "name": "Контролер склада",
             "url": "https://hh.ru/vacancy/103531332",
             "salary": "0 руб.",
+            "city": "Москва",
             "requirements": "От Вас: Желание зарабатывать. Внимательность, ответственность.",
         },
-    }
+    ]
+
+
+@pytest.fixture
+def strings_for_print() -> List:
+    """
+    Фикстура, содержащая строки, которые печатаются в консоль.
+
+    :return: Информация о вакансиях в виде читабельных строк.
+    """
+    return [
+        "Название вакансии: Чайный сомелье\n"
+        "Ссылка на вакансию: https://hh.ru/vacancy/106029258\n"
+        "Зарплата: 80000 руб.\n"
+        "Локация размещения вакансии: Санкт-Петербург\n"
+        "Требования: Требования не указаны",
+        "Название вакансии: Тестировщик комфорта квартир\n"
+        "Ссылка на вакансию: https://hh.ru/vacancy/93353083\n"
+        "Зарплата: 350000-450000 руб.\n"
+        "Локация размещения вакансии: Воронеж\n"
+        "Требования: Занимать активную жизненную позицию",
+        "Название вакансии: Go Developer\n"
+        "Ссылка на вакансию: https://hh.ru/vacancy/106507837\n"
+        "Зарплата: 600000 руб.\n"
+        "Локация размещения вакансии: Москва\n"
+        "Требования: Требования не указаны.",
+        "Название вакансии: Контролер склада\n"
+        "Ссылка на вакансию: https://hh.ru/vacancy/103531332\n"
+        "Зарплата: 0 руб.\n"
+        "Локация размещения вакансии: Москва\n"
+        "Требования: От Вас: Желание зарабатывать. Внимательность, ответственность.",
+    ]
