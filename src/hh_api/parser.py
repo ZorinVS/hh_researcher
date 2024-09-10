@@ -9,16 +9,10 @@ class Parser(ABC):
     Абстрактный класс парсера.
 
     Методы:
-        __init__: Конструктор инициализирующий объект для работы с API HeadHunter.
         _connect_to_api: Метод позволяющий проверить подключение к API.
         get_vacancies: Метод для получения информации о вакансиях от API в виде списка словарей.
         _get_area_id: Статический метод для получения id города.
     """
-
-    @abstractmethod
-    def __init__(self) -> None:
-        """Конструктор парсера."""
-        pass
 
     @abstractmethod
     def _connect_to_api(self) -> Optional[requests.Response]:

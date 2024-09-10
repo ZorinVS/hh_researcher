@@ -4,12 +4,7 @@ from typing import Any, Tuple, Union
 
 
 class Validator(ABC):
-    """
-    Абстрактный класс для валидации данных вакансии.
-
-    Методы:
-        validate: Абстрактный метод для валидации значения.
-    """
+    """Абстрактный класс для валидации данных вакансии."""
 
     @staticmethod
     @abstractmethod
@@ -24,12 +19,7 @@ class Validator(ABC):
 
 
 class NameValidator(Validator):
-    """
-    Валидатор для названия вакансии.
-
-    Методы:
-        validate: Проверяет, что название вакансии не пустое.
-    """
+    """Валидатор для названия вакансии."""
 
     @staticmethod
     def validate(value: str) -> str:
@@ -46,12 +36,7 @@ class NameValidator(Validator):
 
 
 class URLValidator(Validator):
-    """
-    Валидатор для URL вакансии.
-
-    Методы:
-        validate: Проверяет, что URL вакансии начинается с 'https://'.
-    """
+    """Валидатор для URL вакансии."""
 
     @staticmethod
     def validate(value: str) -> str:
@@ -72,12 +57,7 @@ class URLValidator(Validator):
 
 
 class RequirementsValidator(Validator):
-    """
-    Валидатор для требований к вакансии.
-
-    Методы:
-        validate: Проверяет, что требования к вакансии указаны.
-    """
+    """Валидатор для требований к вакансии."""
 
     @staticmethod
     def validate(value: str) -> str:
@@ -93,12 +73,7 @@ class RequirementsValidator(Validator):
 
 
 class SalaryValidator(Validator):
-    """
-    Валидатор для зарплаты вакансии.
-
-    Методы:
-        validate: Проверяет корректность указания зарплаты.
-    """
+    """Валидатор для зарплаты вакансии."""
 
     @staticmethod
     def validate(value: Union[str, int]) -> Union[Tuple[int, int], int]:
@@ -130,13 +105,25 @@ class SalaryValidator(Validator):
         return 0
 
 
-class SearchValidator(Validator):
-    """
-    Валидатор для названия города.
+class AreaNameValidator(Validator):
+    """Валидатор для названия города размещения вакансии."""
 
-    Методы:
-        validate: Проверяет наличие названия города и возвращает название в виде списка.
-    """
+    @staticmethod
+    def validate(value: str) -> str:
+        """
+        Проверяет, что название города размещения вакансии указано.
+        Если информация не указана, используется 'Россия'.
+
+        :param value: Название города.
+        :return: Валидированное название.
+        """
+        if not value:
+            return "Россия"
+        return value
+
+
+class SearchValidator(Validator):
+    """Валидатор для названия города."""
 
     @staticmethod
     def validate(value: str) -> list:

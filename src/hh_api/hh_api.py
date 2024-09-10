@@ -95,7 +95,6 @@ class HH(Parser):
         """
         # Валидация города перед поиском ID
         name = SearchValidator.validate(city_name)
-        # not_found = f"Не удалось найти город '{city_name}'. " f"Поиск вакансий будет осуществлен по всей России."
         not_found = f"Не удалось найти город '{city_name}'. Поиск вакансий будет осуществлен по всей России."
         if not name:
             print(not_found)

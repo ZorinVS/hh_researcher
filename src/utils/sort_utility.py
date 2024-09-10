@@ -1,6 +1,7 @@
-from typing import Dict, List, Tuple, Union
+from typing import List, Union
 
 from src.utils.validator import SalaryValidator
+from src.vacancy.vacancy import Vacancy
 
 
 def avg_salary(salary_str: str) -> Union[int, float]:
@@ -20,27 +21,22 @@ def avg_salary(salary_str: str) -> Union[int, float]:
     return salary
 
 
-def get_salary(item: Tuple[str, Dict[str, str]]) -> Union[int, float]:
+def get_salary(vacancy: Vacancy) -> Union[int, float]:
     """
-    Ключ для сортировки в функции sorted.
-    Предназначен для обращения к ключу вакансии "salary".
+    Функция для получения зарплаты из объекта вакансии в виде числа.
 
-    Вспомогательные функции:
-        avg_salary: Из строки возвращает среднее значение зарплаты.
-
-    :param item: Параметр для перебора списка картежей.
-                 Список хранит картежи формата (ID, vacancy), где vacancy - словарь, содержащий информацию о вакансии.
-    :return: Зарплата в виде одного числа.
+    :param vacancy: Объект вакансии.
+    :return: Зарплата в виде числа.
     """
-    return avg_salary(item[1]["salary"])
+    return avg_salary(vacancy.salary)
 
 
-def sort_by_salary(data: Dict[str, Dict[str, str]], descending: bool = True) -> List[Tuple[str, Dict[str, str]]]:
+def sort_by_salary(vacancies_list: List[Vacancy], descending: bool = True) -> List[Vacancy]:
     """
-    Функция для сортировки вакансий по зарплате.
+    Функция для сортировки списка вакансий.
 
-    :param data: Данные, хранящие информацию о вакансиях.
-    :param descending: Направление сортировки (по умолчанию сортирует от большего к меньшему - True).
-    :return: Отсортированные вакансии в виде списка картежей ( List[(ID, vacancy)] ).
+    :param vacancies_list: Список объектов вакансий.
+    :param descending: Параметр отвечающий за направление сортировки вакансий. По умолчанию от большего к меньшему.
+    :return: Отсортированный список вакансий.
     """
-    return sorted(data.items(), key=get_salary, reverse=descending)
+    return sorted(vacancies_list, key=get_salary, reverse=descending)
