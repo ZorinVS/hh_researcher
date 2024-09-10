@@ -1,47 +1,40 @@
 import os
-from typing import Dict
 
 from paths import ROOT_PATH
 from src.hh_api.hh_api import HH
-from src.saver.data_saver import HeadHunterJSON
+from src.utils.top_n_utility import get_top_vacancies
+from src.utils.utils import create_list_of_vacancies, initialization_menu, search_menu
 from src.vacancy.vacancy import Vacancy
-from user_interaction_utils.initialization import set_file_name
-from user_interaction_utils.manager import select_manager_menu_items
-from user_interaction_utils.searcher import select_search_menu_items
 
 
-def main_menu() -> None:
-    print("\n=== Главное меню ===")
-    print("1. Поиск вакансий")
-    print("2. Менеджер вакансий")
-    print("3. Выйти")
+def user_interaction() -> None:
+    """Функция для взаимодействия с пользователем"""
+
+    vacancies_saver = initialization_menu()
+    vacancies_data = search_menu(hh_api=HH())
+    if not vacancies_data:
+        return
+    vacancies_list = create_list_of_vacancies(vacancies_data)
+
+    print("\n=== Меню просмотра ===")
+    print("1. Показать и сохранить все найденные вакансии")
+    print("2. Показать и сохранить топ N вакансий")
     print("=====================")
 
-
-# Функция для взаимодействия с пользователем
-def user_interaction() -> None:
-    hh_api = HH()
-    data_saver = HeadHunterJSON()
-    vacancy_saver = set_file_name()
-    vacancies_dict: Dict[int, Vacancy] = {}
-
     while True:
-        main_menu()
-        choice = input("Выберите пункт меню (1-3): ").strip()
+        choice = input("Выберите пункт меню (1-2): ").strip()
 
         if choice == "1":
-            select_search_menu_items(hh_api, data_saver)
-
-        elif choice == "2":
-            select_manager_menu_items(hh_api, data_saver, vacancy_saver, vacancies_dict)
-
-        elif choice == "3":
-            print("Выход из программы")
-
-            for vacancy in vacancies_dict.values():
-                vacancy.delete()  # Освобождение id для дальнейшей демонстрации примера работы класса Vacancy
-
             break
+        elif choice == "2":
+            vacancies_list = get_top_vacancies(vacancies_list)
+            break
+
+    print("\n--- Сохранение вакансий ---")
+    for vacancy in vacancies_list:
+        vacancies_saver.add_vacancy(vacancy)
+    print("\n--- Вывод вакансий ---")
+    vacancies_saver.get_vacancies()
 
 
 if __name__ == "__main__":
@@ -56,33 +49,21 @@ if __name__ == "__main__":
     # ======================= Демонстрация примера работы класса Vacancy =======================
     print("\n\n=== ПРИМЕР РАБОТЫ КЛАССА VACANCY ===")
 
-    v1 = Vacancy("Чайный сомелье", "https://hh.ru/vacancy/106029258", "от 80 000 ₽", "Требования не указаны")
+    v1 = Vacancy(
+        "Чайный сомелье", "https://hh.ru/vacancy/106029258", "от 80 000 ₽", "Санкт-Петербург", "Требования не указаны"
+    )
 
     v2 = Vacancy(
         "Тестировщик комфорта квартир",
         "https://hh.ru/vacancy/93353083",
         "350 000 - 450 000 ₽",
-        (
-            "Занимать активную жизненную позицию, "
-            "уметь активно танцевать и громко петь. "
-            "Обладать навыками коммуникации, чтобы налаживать добрососедские отношения. "
-            "Обладать системным мышлением..."
-        ),
+        "Воронеж",
+        "Занимать активную жизненную позицию",
     )
 
-    print(f"\nID{v1.id}", end=" ")
-    print(f"| Название: {v1.name}")
-    print(" " * 3, f"| URL: {v1.url}")
-    print(" " * 3, f"| Зарплата: {v1.salary}")
-    print(" " * 3, f"| Требования: {v1.requirements}")
+    print(v1, end="\n\n")
+    print(v2, end="\n\n")
 
-    print(f"\nID{v2.id}", end=" ")
-    print(f"| Название: {v2.name}")
-    print(" " * 3, f"| URL: {v2.url}")
-    print(" " * 3, f"| Зарплата: {v2.salary}")
-    print(" " * 3, f"| Требования: {v2.requirements}")
+    print(f"v1: {v1.salary}\n" f"v2: {v2.salary}\n")
 
-    print(f"\nv1: {v1.salary}")
-    print(f"v2: {v2.salary}")
-    print(f"\nv1 > v2: {v1 > v2}")
-    print(f"v1 < v2: {v1 < v2}")
+    print(f"v1 > v2: {v1 > v2}\n" f"v1 < v2: {v1 < v2}")
