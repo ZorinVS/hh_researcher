@@ -1,0 +1,37 @@
+[
+    {
+        "name": "Nanny / Governor Native English Speaker for 4 year old boy",
+        "url": "https://hh.ru/vacancy/105695615",
+        "salary": "336000-504000 руб.",
+        "city": "Москва",
+        "requirements": "Payment: 4,000 – 6,000 rubles/hour. Need a nanny with English (native speaker) for a 4-year-old boy. - "
+    },
+    {
+        "name": "Devops-инженер",
+        "url": "https://hh.ru/vacancy/107028802",
+        "salary": "300000 руб.",
+        "city": "Казань",
+        "requirements": "От 3 лет опыта в DevOps. Уверенные знания Ubuntu/Debian Server. Опыт работы с Docker и желательно Kubernetes. "
+    },
+    {
+        "name": "Data Engineer (Gamedev)",
+        "url": "https://hh.ru/vacancy/107080969",
+        "salary": "225000-370000 руб.",
+        "city": "Москва",
+        "requirements": "AWS (SQS, EC2, Route 53). C#. ASP.NET Core. Entity Framework Core. Ansible. PostgreSQL (работа с pg_partman, pg_cron - плюс). Parquet. "
+    },
+    {
+        "name": "Game designer",
+        "url": "https://hh.ru/vacancy/106183477",
+        "salary": "270000 руб.",
+        "city": "Москва",
+        "requirements": "Опыт работы от 2х лет. Опыт создания с нуля и запуска в продакшен казуальных игр (опыт создания idle будет..."
+    },
+    {
+        "name": "Telegram mini app developer",
+        "url": "https://hh.ru/vacancy/106534065",
+        "salary": "200000-300000 руб.",
+        "city": "Москва",
+        "requirements": "...с транзакциями.- Опыт работы с библиотеками Telegram <highlighttext>games</highlighttext> api (https://core.telegram.org/bots/<highlighttext>games</highlighttext>). Telegram mini apps (https://core.telegram.org/bots/webapps..."
+    }
+]
